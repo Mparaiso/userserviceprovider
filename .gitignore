@@ -2,8 +2,7 @@ composer.lock
 phpunit.xml
 Tests/autoload.php
 nbproject
+web/*
 catalog.xml
-Propel/om/*
-Propel/map/*
-
+app/*
 vendor/*

@@ -1,5 +1,7 @@
 <?php
 
+namespace Mparaiso\Provider;
+
 use Silex\ServiceProviderInterface;
 use Silex\Application;
 
