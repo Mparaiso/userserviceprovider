@@ -6,3 +6,6 @@ web/*
 catalog.xml
 app/*
 vendor/*
+db.sqlite
+tests/
+console.php
