@@ -28,12 +28,12 @@ class ProfileController extends BaseController
      */
     public function show()
     {
-        $user = $this->app['security.context']->getToken()->getUser();
+        $user = $this->app['security']->getToken()->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->app['templating']->renderResponse('FOSUserBundle:Profile:show.html.'.$this->app['fos_user.template.engine'], array('user' => $user));
+        return $this->app['templating']->renderResponse('User/Profile/show.html.'.$this->app['fos_user.template.engine'], array('user' => $user));
     }
 
     /**
@@ -41,7 +41,7 @@ class ProfileController extends BaseController
      */
     public function edit()
     {
-        $user = $this->app['security.context']->getToken()->getUser();
+        $user = $this->app['security']->getToken()->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
@@ -57,7 +57,7 @@ class ProfileController extends BaseController
         }
 
         return $this->app['templating']->renderResponse(
-            'FOSUserBundle:Profile:edit.html.'.$this->app['fos_user.template.engine'],
+            'User/Profile/edit.html.'.$this->app['fos_user.template.engine'],
             array('form' => $form->createView())
         );
     }
@@ -80,6 +80,6 @@ class ProfileController extends BaseController
      */
     protected function setFlash($action, $value)
     {
-        $this->app['session']->setFlash($action, $value);
+        $this->app['session']->getFlashBag->set($action, $value);
     }
 }

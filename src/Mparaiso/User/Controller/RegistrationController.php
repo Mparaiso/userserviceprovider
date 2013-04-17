@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\UserBundle\Controller;
+namespace Mparaiso\User\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +25,9 @@ use FOS\UserBundle\Model\UserInterface;
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class RegistrationController extends ContainerAware
+class RegistrationController extends BaseController
 {
-    public function registerAction()
+    public function register()
     {
         $form = $this->app['fos_user.registration.form'];
         $formHandler = $this->app['fos_user.registration.form.handler'];
@@ -57,7 +57,7 @@ class RegistrationController extends ContainerAware
             return $response;
         }
 
-        return $this->app['templating']->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
+        return $this->app['templating']->renderResponse('User/Registration/register.html.'.$this->getEngine(), array(
             'form' => $form->createView(),
         ));
     }
@@ -65,7 +65,7 @@ class RegistrationController extends ContainerAware
     /**
      * Tell the user to check his email provider
      */
-    public function checkEmailAction()
+    public function checkEmail()
     {
         $email = $this->app['session']->get('fos_user_send_confirmation_email/email');
         $this->app['session']->remove('fos_user_send_confirmation_email/email');
@@ -83,7 +83,7 @@ class RegistrationController extends ContainerAware
     /**
      * Receive the confirmation token from user email provider, login the user
      */
-    public function confirmAction($token)
+    public function confirm($token)
     {
         $user = $this->app['fos_user.user_manager']->findUserByConfirmationToken($token);
 
@@ -105,9 +105,9 @@ class RegistrationController extends ContainerAware
     /**
      * Tell the user his account is now confirmed
      */
-    public function confirmedAction()
+    public function confirmed()
     {
-        $user = $this->app['security.context']->getToken()->getUser();
+        $user = $this->app['security']->getToken()->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
@@ -142,7 +142,7 @@ class RegistrationController extends ContainerAware
      */
     protected function setFlash($action, $value)
     {
-        $this->app['session']->setFlash($action, $value);
+        $this->app['session']->getFlashBag->set($action, $value);
     }
 
     protected function getEngine()
